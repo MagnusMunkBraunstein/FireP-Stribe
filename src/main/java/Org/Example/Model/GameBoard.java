@@ -6,17 +6,16 @@ import java.util.List;
 public class GameBoard {
 
     // Constants for the game board dimensions
-    private final int ROWS = 6;
-    private final int COLS = 7;
+    public static final int ROWS = 6;
+    public static final int COLS = 7;
     private int[][] board;
-
 
     // Constructor to initialize the game board
     public GameBoard() {
         board = new int[ROWS][COLS];
     }
 
-    //Denne metode forsøger at placere en brik for en spiller i en given kolonne.
+    // Denne metode forsøger at placere en brik for en spiller i en given kolonne.
     // Den starter fra bunden af kolonnen og går opad for at finde den første ledige plads.
     public boolean makeMove(int col, int player) {
         for (int row = ROWS - 1; row >= 0; row--) {
@@ -30,8 +29,7 @@ public class GameBoard {
         return false;
     }
 
-
-    //Denne metode fjerner den øverste brik i en given kolonne.
+    // Denne metode fjerner den øverste brik i en given kolonne.
     // Den starter fra toppen af kolonnen og går nedad for at finde den første brik.
     // Når den finder en brik, fjernes den og metoden afsluttes.
     public void undoMove(int col) {
@@ -43,11 +41,58 @@ public class GameBoard {
         }
     }
 
-
+    // Denne metode tjekker om en given spiller har vundet spillet
     public boolean isWinningMove(int player) {
+        // Tjek horisontalt
+        for (int row = 0; row < ROWS; row++) {
+            for (int col = 0; col < COLS - 3; col++) {
+                if (board[row][col] == player &&
+                        board[row][col + 1] == player &&
+                        board[row][col + 2] == player &&
+                        board[row][col + 3] == player) {
+                    return true;
+                }
+            }
+        }
+
+        // Tjek vertikalt
+        for (int row = 0; row < ROWS - 3; row++) {
+            for (int col = 0; col < COLS; col++) {
+                if (board[row][col] == player &&
+                        board[row + 1][col] == player &&
+                        board[row + 2][col] == player &&
+                        board[row + 3][col] == player) {
+                    return true;
+                }
+            }
+        }
+
+        // Tjek diagonal (↘)
+        for (int row = 0; row < ROWS - 3; row++) {
+            for (int col = 0; col < COLS - 3; col++) {
+                if (board[row][col] == player &&
+                        board[row + 1][col + 1] == player &&
+                        board[row + 2][col + 2] == player &&
+                        board[row + 3][col + 3] == player) {
+                    return true;
+                }
+            }
+        }
+
+        // Tjek diagonal (↙)
+        for (int row = 3; row < ROWS; row++) {
+            for (int col = 0; col < COLS - 3; col++) {
+                if (board[row][col] == player &&
+                        board[row - 1][col + 1] == player &&
+                        board[row - 2][col + 2] == player &&
+                        board[row - 3][col + 3] == player) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
-
 
     // Denne metode tjekker om brættet er fyldt.
     // Den gennemgår den øverste række og kontrollerer, om der er nogen tomme pladser.
@@ -57,7 +102,6 @@ public class GameBoard {
         }
         return true;
     }
-
 
     // Denne metode returnerer det nuværende spilleskema som et 2D-array.
     public int[][] getBoard() {
@@ -76,11 +120,8 @@ public class GameBoard {
         return moves;
     }
 
-
     // Denne metode nulstiller spillebrættet
     public void resetBoard() {
         board = new int[ROWS][COLS];
     }
-
-
 }
