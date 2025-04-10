@@ -1,13 +1,10 @@
-package Org.Example.View;
+package Org.Example.Game;
 
-import Org.Example.Model.GameBoard;
-import Org.Example.Model.AIPlayer;
-import Org.Example.Controller.GameController;
+import Org.Example.Logic.GameBoard;
+import Org.Example.Logic.AIPlayer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Stack;
 
 public class ConnectFourGui {
@@ -56,6 +53,10 @@ public class ConnectFourGui {
 
         boardPanel = new JPanel(new GridLayout(GameBoard.ROWS, GameBoard.COLS));
         frame.add(boardPanel, BorderLayout.CENTER);
+
+        //Blå Baggrund
+        //boardPanel.setBackground(Color.BLUE);
+
 
         JPanel controlPanel = new JPanel();
         JButton restartButton = new JButton("Restart");
