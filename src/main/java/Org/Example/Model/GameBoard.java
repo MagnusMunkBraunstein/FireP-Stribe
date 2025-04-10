@@ -5,12 +5,12 @@ import java.util.List;
 
 public class GameBoard {
 
-    // Constants for the game board dimensions
+    // Constants
     public static final int ROWS = 6;
     public static final int COLS = 7;
     private int[][] board;
 
-    // Constructor to initialize the game board
+    // Constructor
     public GameBoard() {
         board = new int[ROWS][COLS];
     }
