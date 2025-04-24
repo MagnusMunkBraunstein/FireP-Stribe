@@ -8,11 +8,12 @@ import java.awt.*;
 import java.util.Stack;
 
 public class ConnectFourGui {
+
     private JFrame frame;
     private JPanel boardPanel;
     private JLabel statusLabel;
     private GameBoard board;
-    private AIPlayer ai;
+    private final AIPlayer ai;
     private int currentPlayer;
     private int aiDepth;
     private Stack<Integer> moveHistory;
@@ -55,7 +56,7 @@ public class ConnectFourGui {
         frame.add(boardPanel, BorderLayout.CENTER);
 
         //Blå Baggrund
-        //boardPanel.setBackground(Color.BLUE);
+        boardPanel.setBackground(Color.BLUE);
 
 
         JPanel controlPanel = new JPanel();
@@ -105,7 +106,7 @@ public class ConnectFourGui {
 
     private void aiMove() {
         statusLabel.setText("AI is thinking...");
-        Timer timer = new Timer(500, e -> {
+        Timer timer = new Timer(0, e -> {
             int aiMove = ai.getBestMove(board, aiDepth);
             board.makeMove(aiMove, 2);
             moveHistory.push(aiMove);

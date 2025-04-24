@@ -21,10 +21,23 @@ public class AIPlayer {
         return bestMove;
     }
 
+    // Alpha-Beta pruning implementation
     private int alphaBeta(GameBoard board, int depth, int alpha, int beta, boolean maximizingPlayer) {
-        if (depth == 0 || board.isFull() || board.isWinningMove(AI_PLAYER) || board.isWinningMove(HUMAN_PLAYER)) {
+        // Tjek først om der er en vinder, så vi ikke evaluerer unødigt
+        if (board.isWinningMove(AI_PLAYER)) {
+            return 100000; // AI vinder - høj score
+        }
+        if (board.isWinningMove(HUMAN_PLAYER)) {
+            return -100000; // Menneske vinder - lav score
+        }
+
+        // Tjek derefter om vi har nået dybdegrænsen eller et fuldt bræt
+        if (depth == 0 || board.isFull()) {
             return evaluateBoard(board);
         }
+
+        //ovenstående if-statement tjekker om vi er nået til bunden af træet, eller om der er en vinder
+        // den skal deles op for hvis der er en vinder så skal den ikke evaluerer.
 
         if (maximizingPlayer) {
             int maxEval = Integer.MIN_VALUE;
@@ -60,10 +73,11 @@ public class AIPlayer {
         int centerCount = 0;
         for (int row = 0; row < GameBoard.ROWS; row++) {
             if (grid[row][centerColumn] == AI_PLAYER) {
-                centerCount++;
+                // Brikker tættere på bunden er mere værd (mere stabile)
+                centerCount += (GameBoard.ROWS - row);
             }
         }
-        score += centerCount * 6;
+        score += centerCount * 3;
 
         // Horisontale vinduer
         for (int row = 0; row < GameBoard.ROWS; row++) {
@@ -104,7 +118,7 @@ public class AIPlayer {
             }
         }
 
-        // Diagonal ↙
+        // Diagonal
         for (int row = 3; row < GameBoard.ROWS; row++) {
             for (int col = 0; col < GameBoard.COLS - 3; col++) {
                 int[] window = {
@@ -135,7 +149,16 @@ public class AIPlayer {
 
         if (playerCount == 4) score += 1000;
         else if (playerCount == 3 && emptyCount == 1) score += 100;
-        else if (playerCount == 2 && emptyCount == 2) score += 10;
+        else if (playerCount == 2 && emptyCount == 2) {
+            // Tjek om brikkerne er sammenhængende (stærkere position)
+            if ((window[0] == player && window[1] == player) ||
+                    (window[1] == player && window[2] == player) ||
+                    (window[2] == player && window[3] == player)) {
+                score += 15; // Sammenhængende brikker er stærkere
+            } else {
+                score += 10;  // Normal to brikker
+            }
+        }
 
         if (opponentCount == 3 && emptyCount == 1) score -= 80;
         else if (opponentCount == 2 && emptyCount == 2) score -= 5;

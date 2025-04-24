@@ -19,7 +19,7 @@ public class GameBoard {
     // Den starter fra bunden af kolonnen og går opad for at finde den første ledige plads.
     public boolean makeMove(int col, int player) {
         for (int row = ROWS - 1; row >= 0; row--) {
-            // Hvis den aktuelle plads er tom, placeres spilleren der
+            // Hvis den aktuelle plads er tom, placeres spillerens brik der
             if (board[row][col] == 0) {
                 board[row][col] = player;
                 return true;
@@ -67,7 +67,7 @@ public class GameBoard {
             }
         }
 
-        // Tjek diagonal (↘)
+        // Tjek diagonal
         for (int row = 0; row < ROWS - 3; row++) {
             for (int col = 0; col < COLS - 3; col++) {
                 if (board[row][col] == player &&
@@ -79,7 +79,7 @@ public class GameBoard {
             }
         }
 
-        // Tjek diagonal (↙)
+        // Tjek diagonal
         for (int row = 3; row < ROWS; row++) {
             for (int col = 0; col < COLS - 3; col++) {
                 if (board[row][col] == player &&
@@ -103,7 +103,7 @@ public class GameBoard {
         return true;
     }
 
-    // Denne metode returnerer det nuværende spilleskema som et 2D-array.
+    // Denne metode returnerer det nuværende spilleskema
     public int[][] getBoard() {
         return board;
     }
