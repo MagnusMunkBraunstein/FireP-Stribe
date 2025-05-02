@@ -56,7 +56,7 @@ public class ConnectFourGui {
         frame.add(boardPanel, BorderLayout.CENTER);
 
         //Blå Baggrund
-        boardPanel.setBackground(Color.BLUE);
+        //boardPanel.setBackground(Color.BLUE);
 
 
         JPanel controlPanel = new JPanel();
@@ -133,7 +133,7 @@ public class ConnectFourGui {
                 if (grid[row][col] == 1) {
                     cell.setForeground(Color.RED);
                 } else if (grid[row][col] == 2) {
-                    cell.setForeground(Color.YELLOW);
+                    cell.setForeground(Color.magenta);
                 } else {
                     cell.setForeground(Color.LIGHT_GRAY);
                 }
