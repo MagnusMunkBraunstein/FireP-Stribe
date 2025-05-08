@@ -28,7 +28,7 @@ public class ConnectFourGui {
     }
 
     private void chooseAIDepth() {
-        String depth = JOptionPane.showInputDialog(null, "Enter AI search depth:", "AI Difficulty", JOptionPane.QUESTION_MESSAGE);
+        String depth = JOptionPane.showInputDialog(null, "Search dept:", "Difficulty", JOptionPane.QUESTION_MESSAGE);
         try {
             aiDepth = Integer.parseInt(depth);
         } catch (NumberFormatException e) {
@@ -56,7 +56,7 @@ public class ConnectFourGui {
         frame.add(boardPanel, BorderLayout.CENTER);
 
         //Blå Baggrund
-        //boardPanel.setBackground(Color.BLUE);
+        boardPanel.setBackground(Color.blue);
 
 
         JPanel controlPanel = new JPanel();
@@ -90,6 +90,8 @@ public class ConnectFourGui {
         }
     }
 
+    // Metode til at håndtere spillerens træk - virker men er uden pop op bokse..
+    /*
     private void playerMove(int col) {
         if (board.makeMove(col, currentPlayer)) {
             moveHistory.push(col);
@@ -122,6 +124,45 @@ public class ConnectFourGui {
         timer.setRepeats(false);
         timer.start();
     }
+     */
+
+    private void playerMove(int col) {
+        if (board.makeMove(col, currentPlayer)) {
+            moveHistory.push(col);
+            updateBoard();
+            if (board.isWinningMove(currentPlayer)) {
+                String message = "Player " + currentPlayer + " Wins!";
+                statusLabel.setText(message);
+                JOptionPane.showMessageDialog(frame, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                disableButtons();
+                return;
+            }
+            currentPlayer = 2;
+            aiMove();
+        }
+    }
+
+    private void aiMove() {
+        statusLabel.setText("AI is thinking...");
+        Timer timer = new Timer(0, e -> {
+            int aiMove = ai.getBestMove(board, aiDepth);
+            board.makeMove(aiMove, 2);
+            moveHistory.push(aiMove);
+            updateBoard();
+            if (board.isWinningMove(2)) {
+                String message = "AI Wins!";
+                statusLabel.setText(message);
+                JOptionPane.showMessageDialog(frame, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                disableButtons();
+                return;
+            }
+            currentPlayer = 1;
+            statusLabel.setText("Player 1's Turn");
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+
 
     private void updateBoard() {
         boardPanel.removeAll();
@@ -133,7 +174,7 @@ public class ConnectFourGui {
                 if (grid[row][col] == 1) {
                     cell.setForeground(Color.RED);
                 } else if (grid[row][col] == 2) {
-                    cell.setForeground(Color.magenta);
+                    cell.setForeground(Color.YELLOW);
                 } else {
                     cell.setForeground(Color.LIGHT_GRAY);
                 }
