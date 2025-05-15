@@ -1,0 +1,6 @@
+Vi har udviklet "AI Erik" Til at kunne spille 4 på stribe.
+For at Starte spillet skal man kører den main som ligger i klassen ConnectFourGui
+Når spillet starter skal man bare følge gui, for at sætte sværhedsgrad(søgedybde)
+Desuden skal man vælge om spilleren eller "AI Erik" skal starte.
+Hvis man vælger at spille mod "AI Erik" så skal ai erik vælge en kolonne at spille i før man trykker på noget.
+Efterfølgende så vælger man hvor man vil ligge sin brik, ved at trykke på "DROP" knappen.

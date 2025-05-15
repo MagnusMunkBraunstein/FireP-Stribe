@@ -1,4 +1,4 @@
-package Org.Example.Logic;
+package Org.Example.Game;
 
 public class AIPlayer {
     private final int AI_PLAYER = 2;

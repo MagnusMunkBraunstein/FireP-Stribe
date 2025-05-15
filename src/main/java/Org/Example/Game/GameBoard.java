@@ -1,5 +1,4 @@
-package Org.Example.Logic;
-
+package Org.Example.Game;
 import java.util.ArrayList;
 import java.util.List;
 

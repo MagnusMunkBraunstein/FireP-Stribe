@@ -1,8 +1,4 @@
 package Org.Example.Game;
-
-import Org.Example.Logic.GameBoard;
-import Org.Example.Logic.AIPlayer;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Stack;
@@ -28,7 +24,7 @@ public class ConnectFourGui {
     }
 
     private void chooseAIDepth() {
-        String depth = JOptionPane.showInputDialog(null, "Search dept:", "Difficulty", JOptionPane.QUESTION_MESSAGE);
+        String depth = JOptionPane.showInputDialog(null, "Chose AI Erik's search dept: \nMin dept 1 - Max dept 10\nUse search dept 10 for competition", "Difficulty", JOptionPane.QUESTION_MESSAGE);
         try {
             aiDepth = Integer.parseInt(depth);
         } catch (NumberFormatException e) {
@@ -37,7 +33,7 @@ public class ConnectFourGui {
     }
 
     private void chooseStartingPlayer() {
-        Object[] options = {"Player", "AI"};
+        Object[] options = {"Player", "AI Erik"};
         int choice = JOptionPane.showOptionDialog(null, "Who starts?", "Choose Starter",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         currentPlayer = (choice == 0) ? 1 : 2;
@@ -46,17 +42,18 @@ public class ConnectFourGui {
     private void initializeUI() {
         frame = new JFrame("Connect Four");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 700);
+        frame.setSize(725, 725);
+        frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
 
-        statusLabel = new JLabel("Player 1's Turn", SwingConstants.CENTER);
+        statusLabel = new JLabel("Player's Turn", SwingConstants.CENTER);
         frame.add(statusLabel, BorderLayout.NORTH);
 
         boardPanel = new JPanel(new GridLayout(GameBoard.ROWS, GameBoard.COLS));
         frame.add(boardPanel, BorderLayout.CENTER);
 
         //Blå Baggrund
-        boardPanel.setBackground(Color.blue);
+        //boardPanel.setBackground(Color.blue);
 
 
         JPanel controlPanel = new JPanel();
@@ -90,42 +87,6 @@ public class ConnectFourGui {
         }
     }
 
-    // Metode til at håndtere spillerens træk - virker men er uden pop op bokse..
-    /*
-    private void playerMove(int col) {
-        if (board.makeMove(col, currentPlayer)) {
-            moveHistory.push(col);
-            updateBoard();
-            if (board.isWinningMove(currentPlayer)) {
-                statusLabel.setText("Player " + currentPlayer + " Wins!");
-                disableButtons();
-                return;
-            }
-            currentPlayer = 2;
-            aiMove();
-        }
-    }
-
-    private void aiMove() {
-        statusLabel.setText("AI is thinking...");
-        Timer timer = new Timer(0, e -> {
-            int aiMove = ai.getBestMove(board, aiDepth);
-            board.makeMove(aiMove, 2);
-            moveHistory.push(aiMove);
-            updateBoard();
-            if (board.isWinningMove(2)) {
-                statusLabel.setText("AI Wins!");
-                disableButtons();
-                return;
-            }
-            currentPlayer = 1;
-            statusLabel.setText("Player 1's Turn");
-        });
-        timer.setRepeats(false);
-        timer.start();
-    }
-     */
-
     private void playerMove(int col) {
         if (board.makeMove(col, currentPlayer)) {
             moveHistory.push(col);
@@ -143,26 +104,25 @@ public class ConnectFourGui {
     }
 
     private void aiMove() {
-        statusLabel.setText("AI is thinking...");
+        statusLabel.setText(" AI Erik is thinking...");
         Timer timer = new Timer(0, e -> {
             int aiMove = ai.getBestMove(board, aiDepth);
             board.makeMove(aiMove, 2);
             moveHistory.push(aiMove);
             updateBoard();
             if (board.isWinningMove(2)) {
-                String message = "AI Wins!";
+                String message = " AI Erik Wins!";
                 statusLabel.setText(message);
                 JOptionPane.showMessageDialog(frame, message, "Game Over", JOptionPane.INFORMATION_MESSAGE);
                 disableButtons();
                 return;
             }
             currentPlayer = 1;
-            statusLabel.setText("Player 1's Turn");
+            statusLabel.setText("Player's Turn");
         });
         timer.setRepeats(false);
         timer.start();
     }
-
 
     private void updateBoard() {
         boardPanel.removeAll();
@@ -200,7 +160,7 @@ public class ConnectFourGui {
         moveHistory.clear();
         chooseStartingPlayer();
         updateBoard();
-        statusLabel.setText("Player 1's Turn");
+        statusLabel.setText("Player's Turn");
         if (currentPlayer == 2) {
             aiMove();
         }
