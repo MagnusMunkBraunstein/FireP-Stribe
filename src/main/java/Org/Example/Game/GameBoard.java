@@ -93,7 +93,7 @@ public class GameBoard {
         return false;
     }
 
-    // Denne metode tjekker om brættet er fyldt.
+
     // Den gennemgår den øverste række og kontrollerer, om der er nogen tomme pladser.
     public boolean isFull() {
         for (int col = 0; col < COLS; col++) {

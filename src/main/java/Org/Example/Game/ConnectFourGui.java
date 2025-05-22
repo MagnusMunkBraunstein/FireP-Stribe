@@ -14,6 +14,8 @@ public class ConnectFourGui {
     private int aiDepth;
     private Stack<Integer> moveHistory;
 
+
+    // denne metode initialiserer GUI'en og starter spillet
     public ConnectFourGui() {
         board = new GameBoard();
         ai = new AIPlayer();
@@ -23,6 +25,7 @@ public class ConnectFourGui {
         initializeUI();
     }
 
+    // denne metode beder brugeren om at vælge dybden for AI Erik's søgning
     private void chooseAIDepth() {
         String depth = JOptionPane.showInputDialog(null, "Chose AI Erik's search dept: \nMin dept 1 - Max dept 10\nUse search dept 10 for competition", "Difficulty", JOptionPane.QUESTION_MESSAGE);
         try {
@@ -32,6 +35,8 @@ public class ConnectFourGui {
         }
     }
 
+
+    // denne metode beder brugeren om at vælge, hvem der starter spillet
     private void chooseStartingPlayer() {
         Object[] options = {"Player", "AI Erik"};
         int choice = JOptionPane.showOptionDialog(null, "Who starts?", "Choose Starter",
@@ -39,6 +44,8 @@ public class ConnectFourGui {
         currentPlayer = (choice == 0) ? 1 : 2;
     }
 
+
+    // denne metode initialiserer GUI'en med knapper og labels
     private void initializeUI() {
         frame = new JFrame("Connect Four");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,9 +59,6 @@ public class ConnectFourGui {
         boardPanel = new JPanel(new GridLayout(GameBoard.ROWS, GameBoard.COLS));
         frame.add(boardPanel, BorderLayout.CENTER);
 
-        //Blå Baggrund
-        //boardPanel.setBackground(Color.blue);
-
 
         JPanel controlPanel = new JPanel();
         JButton restartButton = new JButton("Restart");
@@ -66,6 +70,8 @@ public class ConnectFourGui {
         controlPanel.add(restartButton);
         controlPanel.add(undoButton);
 
+
+        // laver kanpperne til at droppe brikker i hver kolonne
         JPanel buttonPanel = new JPanel(new GridLayout(1, GameBoard.COLS));
         for (int col = 0; col < GameBoard.COLS; col++) {
             final int column = col;
@@ -74,6 +80,7 @@ public class ConnectFourGui {
             buttonPanel.add(btn);
         }
 
+        // tilføjer knapperne til GUI'en
         JPanel bottomPanel = new JPanel(new BorderLayout());
         bottomPanel.add(controlPanel, BorderLayout.NORTH);
         bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
@@ -87,6 +94,7 @@ public class ConnectFourGui {
         }
     }
 
+    // denne metode håndterer spillerens træk og opdaterer GUI'en
     private void playerMove(int col) {
         if (board.makeMove(col, currentPlayer)) {
             moveHistory.push(col);
@@ -103,6 +111,7 @@ public class ConnectFourGui {
         }
     }
 
+    // denne metode håndterer AI Erik's træk og opdaterer GUI'en
     private void aiMove() {
         statusLabel.setText(" AI Erik is thinking...");
         Timer timer = new Timer(0, e -> {
@@ -124,6 +133,7 @@ public class ConnectFourGui {
         timer.start();
     }
 
+    // denne metode opdaterer GUI'en med det aktuelle spillebræt
     private void updateBoard() {
         boardPanel.removeAll();
         int[][] grid = board.getBoard();
@@ -145,16 +155,21 @@ public class ConnectFourGui {
         boardPanel.repaint();
     }
 
+
+    // denne metode fortryder det sidste træk og opdaterer GUI'en
     private void undoMove() {
         if (!moveHistory.isEmpty()) {
-            int lastMove = moveHistory.pop();
-            board.undoMove(lastMove);
+            board.undoMove(moveHistory.pop());
+            if (!moveHistory.isEmpty()) {
+                board.undoMove(moveHistory.pop());
+            }
             updateBoard();
-            currentPlayer = (currentPlayer == 1) ? 2 : 1;
-            statusLabel.setText("Player " + currentPlayer + "'s Turn");
+            currentPlayer = 1;
+            statusLabel.setText("Player's Turn");
         }
     }
 
+    // denne metode genstarter spillet og opdaterer GUI'en
     private void restartGame() {
         board = new GameBoard();
         moveHistory.clear();
@@ -166,6 +181,7 @@ public class ConnectFourGui {
         }
     }
 
+    //denne metode deaktivere alle kolonneknapper
     private void disableButtons() {
         for (Component comp : frame.getContentPane().getComponents()) {
             if (comp instanceof JPanel) {

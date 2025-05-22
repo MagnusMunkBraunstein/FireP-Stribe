@@ -4,6 +4,8 @@ public class AIPlayer {
     private final int AI_PLAYER = 2;
     private final int HUMAN_PLAYER = 1;
 
+
+    //denne metode returnerer det bedste træk for AI'en ved hjælp af Alpha-Beta pruning
     public int getBestMove(GameBoard board, int depth) {
         int bestScore = Integer.MIN_VALUE;
         int bestMove = -1;
@@ -64,6 +66,7 @@ public class AIPlayer {
         }
     }
 
+    // denne metode evaluerer brættet og giver en score baseret på AI'ens position
     private int evaluateBoard(GameBoard board) {
         int[][] grid = board.getBoard();
         int score = 0;
@@ -134,6 +137,7 @@ public class AIPlayer {
         return score;
     }
 
+    // denne metode evaluerer et vindue (4 celler) og giver en score baseret på spillerens position
     private int evaluateWindow(int[] window, int player) {
         int score = 0;
         int opponent = (player == 1) ? 2 : 1;
